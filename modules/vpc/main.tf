@@ -6,7 +6,7 @@ resource "aws_vpc" "this" {
   tags = merge(var.tags, { Name = var.name })
 }
 
-# --- Subnets ---1
+# --- Subnets ---2
 
 resource "aws_subnet" "public" {
   count             = 2
