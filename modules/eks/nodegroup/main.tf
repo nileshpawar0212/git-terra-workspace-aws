@@ -34,10 +34,6 @@ resource "aws_eks_node_group" "this" {
   node_role_arn   = var.node_role_arn
   subnet_ids      = var.private_subnet_ids
 
-  # Upgrade node group independently by changing ami_release_version
-  # then run: terraform apply -target=module.nodegroup
-  release_version = var.ami_release_version
-
   launch_template {
     id      = aws_launch_template.this.id
     version = aws_launch_template.this.latest_version
@@ -49,12 +45,10 @@ resource "aws_eks_node_group" "this" {
     max_size     = var.max_size
   }
 
-  # Controls rolling update behaviour during node group upgrade
   update_config {
     max_unavailable = 1
   }
 
-  # Ignore desired_size changes (managed by autoscaler)
   lifecycle {
     ignore_changes = [scaling_config[0].desired_size]
   }

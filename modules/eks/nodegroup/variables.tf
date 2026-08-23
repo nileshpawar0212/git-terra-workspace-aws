@@ -12,11 +12,6 @@ variable "cluster_version" {
   default = "1.32"
 }
 
-variable "ami_release_version" {
-  type        = string
-  description = "Bottlerocket AMI release version — update this to upgrade nodes independently"
-}
-
 variable "node_role_arn" {
   type = string
 }
