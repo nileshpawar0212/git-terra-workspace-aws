@@ -3,6 +3,10 @@ locals {
   tags = { Environment = "demo", Project = "eks" }
 }
 
+data "aws_ssm_parameter" "bottlerocket_ami_release_version" {
+  name = "/aws/service/bottlerocket/aws-k8s-1.32/x86_64/latest/image_version"
+}
+
 module "vpc" {
   source = "./modules/vpc"
 
@@ -58,7 +62,7 @@ module "eks_nodegroup" {
 
   cluster_name        = module.eks_cluster.cluster_name
   cluster_version     = "1.32"
-  ami_release_version = var.bottlerocket_ami_release_version
+  ami_release_version = data.aws_ssm_parameter.bottlerocket_ami_release_version.value
   node_role_arn       = module.iam.node_role_arn
   private_subnet_ids  = module.vpc.private_subnet_ids
   node_sg_id          = module.sg.node_sg_id
